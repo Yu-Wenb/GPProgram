@@ -1,0 +1,16 @@
+{
+  "version" : 1,
+  "name" : "Raster Functions History",
+  "historyItems" : [
+    {
+      "id" : "{7FB9CFBC-1F93-41EB-89E3-B626C9C2BA0A}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "镶嵌栅格",
+      "description" : "将一组栅格数据集连接在一起以创建一个数据集。",
+      "rftPath" : "镶嵌栅格_{7FB9CFBC-1F93-41EB-89E3-B626C9C2BA0A}.rft.xml",
+      "startTime" : "637390149290000000",
+      "endTime" : "637390149310000000"
+    }
+  ]
+}

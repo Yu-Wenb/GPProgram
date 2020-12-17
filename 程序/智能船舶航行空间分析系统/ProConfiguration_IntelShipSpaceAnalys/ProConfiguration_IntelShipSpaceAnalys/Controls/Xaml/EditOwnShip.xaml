@@ -1,0 +1,61 @@
+﻿<Window x:Class="ProConfiguration_IntelShipSpaceAnalys.EditOwnShip"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProConfiguration_IntelShipSpaceAnalys"
+        mc:Ignorable="d"
+        Title="更新本船数据" Height="300" Width="450"  Background="AliceBlue">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\Theme\CustomStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.15*"></ColumnDefinition>
+            <ColumnDefinition Width="0.25*"></ColumnDefinition>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+            <ColumnDefinition Width="0.15*"></ColumnDefinition>
+            <ColumnDefinition Width="0.25*"></ColumnDefinition>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Text="船位经度：" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <TextBox Name="tbx_locationX" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="0,10"></TextBox>
+        <TextBlock Text="°" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBlock>
+
+        <TextBlock Text="船位纬度：" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <TextBox Name="tbx_locationY" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="0,10"></TextBox>
+        <TextBlock Text="°" Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBlock>
+
+
+        <TextBlock Text="对地航向：" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <TextBox Name="tbx_cog" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="0,10"></TextBox>
+        <TextBlock Text="°" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBlock>
+
+        <TextBlock Text="对地航速：" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <TextBox Name="tbx_sog" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="0,10"></TextBox>
+        <TextBlock Text="kn" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBlock>
+
+
+        <TextBlock Text="本船长度：" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <TextBox Name="tbx_length" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="0,10"></TextBox>
+        <TextBlock Text="米" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBlock>
+
+        <TextBlock Text="本船宽度：" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <TextBox Name="tbx_width" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="0,10"></TextBox>
+        <TextBlock Text="米" Grid.Row="2" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBlock>
+
+        <Button Name="btn_save" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6" Style="{StaticResource ConfigBtnStyle}" Content="保存" HorizontalAlignment="Right" Click="btn_save_Click"></Button>
+    </Grid>
+</Window>
