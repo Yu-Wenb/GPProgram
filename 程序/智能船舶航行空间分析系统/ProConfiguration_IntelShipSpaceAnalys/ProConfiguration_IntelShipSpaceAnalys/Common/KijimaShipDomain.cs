@@ -4,7 +4,7 @@ using System;
 
 namespace ProConfiguration_IntelShipSpaceAnalys
 {
-    public class ShipDomain
+    public class KijimaShipDomain
     {
         public const double Sd = 185;
         public static double GetAD(double L, double V)

@@ -51,6 +51,7 @@
     <AddInContent Include="Images\CogWheel24.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColdwellShipDomain.cs" />
     <Compile Include="Controls\Button\btnAnalysRisk.cs" />
     <Compile Include="Common\CalTdvDdv.cs" />
     <Compile Include="Controls\Button\btnGetDDVTDV.cs" />
@@ -95,7 +96,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="Model\Ship.cs" />
-    <Compile Include="Common\ShipDomain.cs" />
+    <Compile Include="Common\KijimaShipDomain.cs" />
     <Compile Include="UI\OnMouseClick.cs" />
     <Compile Include="UI\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
