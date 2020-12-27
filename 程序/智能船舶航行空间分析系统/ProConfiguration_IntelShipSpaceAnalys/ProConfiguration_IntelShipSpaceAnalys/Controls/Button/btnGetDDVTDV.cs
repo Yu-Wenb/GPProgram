@@ -28,7 +28,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
             #region 
             try
             {
-               CalTdvDdv.GetDDVTDV();
+                CollisionRisk.GetCollisionRisk();
             }
             catch (Exception ex)
             {

@@ -29,6 +29,10 @@ namespace ProConfiguration_IntelShipSpaceAnalys
             }
             return map;
         }
+        public static double GIScoord2ShipCoord(double angle)
+        {
+            return 90 - angle;
+        }
         public static async Task<Map> FindOpenExistingMapAsync(string mapName)
         {
             return await QueuedTask.Run(async () =>
@@ -50,6 +54,22 @@ namespace ProConfiguration_IntelShipSpaceAnalys
             });
 
         }
+        public static bool JungeLeft(double rx, double ry, double cog)
+        {
+            cog = 90 - cog;
+            double k = rx / ry;
+            double angleT = Math.Atan(k);
+            if (rx / k > 0) angleT += Math.PI;
+            //angleT = Math.PI / 2 - angleT;//转为真北方位
+            //都为坐标系方位
+            double angleO = AngularUnit.Radians.ConvertToRadians(cog);
+            if (Math.Cos(angleT - angleO) >= 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
         public static double GetShipSymbolSize (double min, double max , double angle)
         {
             //以90度和270度为最小点
@@ -68,11 +88,11 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         }
         public static Polygon GetShipPolygon()
         {
-            MapPoint pt1 = MapPointBuilder.CreateMapPoint(2.0, 0);
+            MapPoint pt1 = MapPointBuilder.CreateMapPoint(0, 2.0);
             MapPoint pt2 = MapPointBuilder.CreateMapPoint(1.0, 1.0);
-            MapPoint pt3 = MapPointBuilder.CreateMapPoint(-1.0, 1.0);
+            MapPoint pt3 = MapPointBuilder.CreateMapPoint(1.0, -1.0);
             MapPoint pt4 = MapPointBuilder.CreateMapPoint(-1.0, -1.0);
-            MapPoint pt5 = MapPointBuilder.CreateMapPoint(1.0, -1.0);
+            MapPoint pt5 = MapPointBuilder.CreateMapPoint(-1.0, 1.0);
  
             List<MapPoint> list = new List<MapPoint>() { pt1, pt2, pt3, pt4, pt5 };
             Polygon polygon = PolygonBuilder.CreatePolygon(list);
@@ -84,7 +104,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
             Polygon init_p = GetShipPolygon();
             MapPoint center = MapPointBuilder.CreateMapPoint(0,0);
             double radians = AngularUnit.Degrees.ConvertToRadians(angle);
-            Polygon p = GeometryEngine.Instance.Rotate(init_p, center, radians) as Polygon;
+            Polygon p = GeometryEngine.Instance.Rotate(init_p, center, -radians) as Polygon;
             return p;
         }
 
@@ -98,7 +118,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                 {
                     List<CIMUniqueValue> listUniqueValues = new List<CIMUniqueValue>();
                     CIMUniqueValue cuv = new CIMUniqueValue { FieldValues = new string[] { i.ToString() } };
-                    CIMMarker cm = SymbolFactory.Instance.ConstructMarker(ColorFactory.Instance.BlackRGB, GetShipSymbolSize( 5, 8, i), SetShipRotate(i));
+                    CIMMarker cm = SymbolFactory.Instance.ConstructMarker(ColorFactory.Instance.BlackRGB, 3, SetShipRotate(i));
                     listUniqueValues.Add(cuv);
                     CIMUniqueValueClass UniqueValueClass = new CIMUniqueValueClass
                     {

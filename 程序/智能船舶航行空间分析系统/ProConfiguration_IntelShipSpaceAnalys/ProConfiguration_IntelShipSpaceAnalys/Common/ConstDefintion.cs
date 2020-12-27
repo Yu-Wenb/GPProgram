@@ -36,16 +36,31 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         public const string ConstFeatureClass_OwnShip = "OwnShip";
         public const string ConstFeatureClass_TargetShip = "TargetShip";
         public const string ConstFeatureClass_ShipDomianEllipse = "ShipDomianEllipse";
+
         public const string ConstFeatureClass_VoyageMask = "VoyageMask";
         public const string ConstFeatureClass_UnionVoyageMask = "UnionVoyageMask";
         public const string ConstFeatureClass_VoyageMaskOutlinePoint = "VoyageMaskOutlinePoint";
+
+        public const string ConstFeatureClass_VoyageShipMask = "VoyageShipMask";
+        public const string ConstFeatureClass_UnionVoyageShipMask = "UnionVoyageShipMask";
+        public const string ConstFeatureClass_VoyageMaskInternalPoint = "VoyageMaskInternalPoint";
+
+        public const string ConstFeatureClass_VoyageLocaMidRiskMask = "VoyageLocaMidRiskMask";
+        public const string ConstFeatureClass_UnionVoyageLocationMidMask = "UnionVoyageLocationMidMask";
+        public const string ConstFeatureClass_VoyageMaskLocaMidPoint = "VoyageMaskLocaMidPoint";
+
+        public const string ConstFeatureClass_VoyageRiskMidRiskMask = "VoyageRiskMidRiskMask";
+        public const string ConstFeatureClass_UnionVoyageRiskMidMask = "UnionVoyageRiskMidMask";
+        public const string ConstFeatureClass_VoyageMaskRiskMidPoint = "VoyageMaskRiskMidPoint";
+
+        public const string ConstFeatureClass_VoyageRiskEvaluatePoint = "VoyageRiskEvaluatePoint";
         public const string ConstFeatureClass_VoyageRiskKeyPoint = "VoyageRiskKeyPoint";
         public const string ConstFeatureClass_SOPBuffer = "SOPBuffer";
         public const string ConstFeatureClass_StaticObstructPoint = "StaticObstructPoint";
         public const string ConstFeatureClass_SOPBufferPoint = "SOPBufferPoint";
         public const string ConstFeatureClass_SOPIDEPoint = "SOPIDEPoint";
         public const string ConstFeatureClass_SOPyBuffer = "SOPyBuffer";
-        public const string ConstFeatureClass_StaticObstructPolygon = "StaticObstructPolygon";
+        public const string ConstFeatureClass_StaticObstructPolygon = "StaticObstructPolygon"; 
 
         public const string ConstFieldName_mmsi = "mmsi";
         public const string ConstFieldName_cog= "cog";
@@ -56,19 +71,25 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         public const string ConstFieldName_asemi = "asemi";
         public const string ConstFieldName_bsemi = "bsemi";
         public const string ConstFieldName_aoffset = "aoffset";
+        public const string ConstFieldName_boffset = "boffset";
         public const string ConstFieldName_ddv = "ddv";
         public const string ConstFieldName_tdv1 = "tdv1";
         public const string ConstFieldName_tdv2 = "tdv2";
+        public const string ConstFieldName_dcpa = "dcpa";
+        public const string ConstFieldName_tcpa = "tcpa";
+        public const string ConstFieldName_CollisionRisk = "CollisionRisk";
         public const string ConstFieldName_centerX1 = "centerX1";
         public const string ConstFieldName_centerX2 = "centerX2";
         public const string ConstFieldName_centerY1 = "centerY1";
         public const string ConstFieldName_centerY2 = "centerY2";
         public const string ConstFieldName_AffectDis = "AffectDis";
         public const string ConstFieldName_AffectDegree = "AffectDegree";
+        public const string ConstFieldName_r_estimate = "r_estimate";
+        public const string ConstFieldName_r_real = "r_real";
         #endregion
 
         #region 自定义
-        
+
         public const string ConstStr_GeoprocessCancling = "取消";
         public const string ConstStr_EncounterSituationHeadOn = "HeadOn";
         public const string ConstStr_EncounterSituationCrossing = "Crossing";
