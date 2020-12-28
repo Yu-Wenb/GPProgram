@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ArcGIS defaultAssembly="ProConfiguration_IntelShipSpaceAnalys.dll" defaultNamespace="ProConfiguration_IntelShipSpaceAnalys" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///E:/ArcPro/bin/ArcGIS.Desktop.Framework.xsd">
+<ArcGIS defaultAssembly="ProConfiguration_IntelShipSpaceAnalys.dll" defaultNamespace="ProConfiguration_IntelShipSpaceAnalys" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///D:/ArcPro/bin/ArcGIS.Desktop.Framework.xsd">
   <AddInInfo id="{5417c9b0-b121-433a-9675-9661e102d34d}" version="1.0" desktopVersion="2.4.19948">
     <Name>ProConfiguration_IntelShipSpaceAnalys</Name>
     <Description>ProConfiguration_IntelShipSpaceAnalys description</Description>
@@ -90,8 +90,7 @@
         </button>
         <button id="ProConfiguration_IntelShipSpaceAnalys_btnRiskEvaluate" caption="创建评估点" assembly="ProConfiguration_IntelShipSpaceAnalys.dll" className="btnRiskEvaluate" loadOnClick="true" smallImage="Images\btnEditCourse.png" largeImage="Images\btnEditCourse.png">
           <tooltip heading="提示">
-            判断船舶会遇危险度的评估点<disabledText />
-          </tooltip>
+            判断船舶会遇危险度的评估点<disabledText /></tooltip>
         </button>
       </controls>
       <dockPanes>

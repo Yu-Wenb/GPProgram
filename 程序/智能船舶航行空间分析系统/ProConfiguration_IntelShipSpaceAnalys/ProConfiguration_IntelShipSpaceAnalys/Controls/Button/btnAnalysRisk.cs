@@ -16,6 +16,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
     {
         protected override void OnClick()
         {
+            //ProcessAsync();
             CreateVoyageMaskAsync();
         }
         private static async Task CreateVoyageMaskAsync()
@@ -171,7 +172,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                         Y = p_ship.Y
                                     };
                                     if (!(CollisionRisk > 0)) continue;
-                                    if (CommonMethod.JungeLeft(own_x - ellipseCenter.X, own_y - ellipseCenter.Y, own_cog) && CollisionRisk != 1) continue;
+                                    //if (CommonMethod.JungeLeft(own_x - ellipseCenter.X, own_y - ellipseCenter.Y, own_cog) && CollisionRisk != 1) continue;
                                     GeodesicEllipseParameter geodesic = new GeodesicEllipseParameter()
                                     {
                                         Center = ellipseCenter,
@@ -213,10 +214,10 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                     //最终图形由两个椭圆和连接椭圆的长方形组成
                                     Geometry e_s_start = GeometryEngine.Instance.SimplifyAsFeature(moved_start_ellipse, false);
                                     Geometry e_s_end = GeometryEngine.Instance.SimplifyAsFeature(moved_end_ellipse, false);
-                                    MapPoint p_1 = MapPointBuilder.CreateMapPoint(centerTs.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTs.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
-                                    MapPoint p_2 = MapPointBuilder.CreateMapPoint(centerTs.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTs.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
-                                    MapPoint p_3 = MapPointBuilder.CreateMapPoint(centerTe.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTe.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
-                                    MapPoint p_4 = MapPointBuilder.CreateMapPoint(centerTe.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTe.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
+                                    MapPoint p_1 = MapPointBuilder.CreateMapPoint(centerTs.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTs.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
+                                    MapPoint p_2 = MapPointBuilder.CreateMapPoint(centerTs.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTs.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
+                                    MapPoint p_3 = MapPointBuilder.CreateMapPoint(centerTe.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTe.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
+                                    MapPoint p_4 = MapPointBuilder.CreateMapPoint(centerTe.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTe.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
                                     IList<MapPoint> p1_4 = GetInternPoints(p_1, p_4);
                                     IList<MapPoint> p2_3 = GetInternPoints(p_2, p_3);
                                     p2_3 = p2_3.Reverse<MapPoint>().ToList();
@@ -373,7 +374,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                         Y = p_ship.Y
                                     };
                                     if (!(CollisionRisk > 0)) continue;
-                                    if (CommonMethod.JungeLeft(own_x - ellipseCenter.X, own_y - ellipseCenter.Y, own_cog) && CollisionRisk != 1) continue;
+                                    //if (CommonMethod.JungeLeft(own_x - ellipseCenter.X, own_y - ellipseCenter.Y, own_cog) && CollisionRisk != 1) continue;
                                     GeodesicEllipseParameter geodesic = new GeodesicEllipseParameter()
                                     {
                                         Center = ellipseCenter,
@@ -415,10 +416,10 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                     //最终图形由两个椭圆和连接椭圆的长方形组成
                                     Geometry e_s_start = GeometryEngine.Instance.SimplifyAsFeature(moved_start_ellipse, false);
                                     Geometry e_s_end = GeometryEngine.Instance.SimplifyAsFeature(moved_end_ellipse, false);
-                                    MapPoint p_1 = MapPointBuilder.CreateMapPoint(centerTs.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTs.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
-                                    MapPoint p_2 = MapPointBuilder.CreateMapPoint(centerTs.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTs.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
-                                    MapPoint p_3 = MapPointBuilder.CreateMapPoint(centerTe.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTe.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
-                                    MapPoint p_4 = MapPointBuilder.CreateMapPoint(centerTe.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTe.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
+                                    MapPoint p_1 = MapPointBuilder.CreateMapPoint(centerTs.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTs.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
+                                    MapPoint p_2 = MapPointBuilder.CreateMapPoint(centerTs.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTs.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
+                                    MapPoint p_3 = MapPointBuilder.CreateMapPoint(centerTe.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTe.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
+                                    MapPoint p_4 = MapPointBuilder.CreateMapPoint(centerTe.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTe.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
                                     IList<MapPoint> p1_4 = GetInternPoints(p_1, p_4);
                                     IList<MapPoint> p2_3 = GetInternPoints(p_2, p_3);
                                     p2_3 = p2_3.Reverse<MapPoint>().ToList();
@@ -575,7 +576,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                         Y = p_ship.Y
                                     };
                                     if (!(CollisionRisk > 0)) continue;
-                                    if (CommonMethod.JungeLeft(own_x - ellipseCenter.X, own_y - ellipseCenter.Y, own_cog) && CollisionRisk!=1) continue;
+                                    //if (CommonMethod.JungeLeft(own_x - ellipseCenter.X, own_y - ellipseCenter.Y, own_cog) && CollisionRisk!=1) continue;
                                     GeodesicEllipseParameter geodesic = new GeodesicEllipseParameter()
                                     {
                                         Center = ellipseCenter,
@@ -617,10 +618,10 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                     //最终图形由两个椭圆和连接椭圆的长方形组成
                                     Geometry e_s_start = GeometryEngine.Instance.SimplifyAsFeature(moved_start_ellipse, false);
                                     Geometry e_s_end = GeometryEngine.Instance.SimplifyAsFeature(moved_end_ellipse, false);
-                                    MapPoint p_1 = MapPointBuilder.CreateMapPoint(centerTs.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTs.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
-                                    MapPoint p_2 = MapPointBuilder.CreateMapPoint(centerTs.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTs.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
-                                    MapPoint p_3 = MapPointBuilder.CreateMapPoint(centerTe.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTe.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
-                                    MapPoint p_4 = MapPointBuilder.CreateMapPoint(centerTe.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTe.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
+                                    MapPoint p_1 = MapPointBuilder.CreateMapPoint(centerTs.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTs.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
+                                    MapPoint p_2 = MapPointBuilder.CreateMapPoint(centerTs.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTs.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
+                                    MapPoint p_3 = MapPointBuilder.CreateMapPoint(centerTe.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTe.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
+                                    MapPoint p_4 = MapPointBuilder.CreateMapPoint(centerTe.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTe.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
                                     IList<MapPoint> p1_4 = GetInternPoints(p_1, p_4);
                                     IList<MapPoint> p2_3 = GetInternPoints(p_2, p_3);
                                     p2_3 = p2_3.Reverse<MapPoint>().ToList();
@@ -781,7 +782,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                         Y = p_ship.Y
                                     };
                                     if (!(CollisionRisk > 0)) continue;
-                                    if (CommonMethod.JungeLeft(own_x - ellipseCenter.X, own_y - ellipseCenter.Y, owm_cog) && CollisionRisk != 1) continue;
+                                    //if (CommonMethod.JungeLeft(own_x - ellipseCenter.X, own_y - ellipseCenter.Y, owm_cog) && CollisionRisk != 1) continue;
                                     GeodesicEllipseParameter geodesic = new GeodesicEllipseParameter()
                                     {
                                         Center = ellipseCenter,
@@ -823,10 +824,10 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                     //最终图形由两个椭圆和连接椭圆的长方形组成
                                     Geometry e_s_start = GeometryEngine.Instance.SimplifyAsFeature(moved_start_ellipse, false);
                                     Geometry e_s_end = GeometryEngine.Instance.SimplifyAsFeature(moved_end_ellipse, false);
-                                    MapPoint p_1 = MapPointBuilder.CreateMapPoint(centerTs.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTs.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
-                                    MapPoint p_2 = MapPointBuilder.CreateMapPoint(centerTs.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTs.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3) ;
-                                    MapPoint p_3 = MapPointBuilder.CreateMapPoint(centerTe.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTe.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3) ;
-                                    MapPoint p_4 = MapPointBuilder.CreateMapPoint(centerTe.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3, centerTe.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.3);
+                                    MapPoint p_1 = MapPointBuilder.CreateMapPoint(centerTs.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTs.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
+                                    MapPoint p_2 = MapPointBuilder.CreateMapPoint(centerTs.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTs.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29) ;
+                                    MapPoint p_3 = MapPointBuilder.CreateMapPoint(centerTe.X + (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTe.Y - (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29) ;
+                                    MapPoint p_4 = MapPointBuilder.CreateMapPoint(centerTe.X - (bsemi * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29, centerTe.Y + (bsemi * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) * 1.29);
                                     IList<MapPoint> p1_4 = GetInternPoints(p_1, p_4);
                                     IList<MapPoint> p2_3 = GetInternPoints(p_2, p_3);
                                     p2_3 = p2_3.Reverse<MapPoint>().ToList();
@@ -955,36 +956,36 @@ namespace ProConfiguration_IntelShipSpaceAnalys
             int i = 1;
             if (xPlus && yPlus)
             {
-                while ((pS.X + 100 * Math.Cos(angle) * i) < pE.X || pS.Y + 100 * Math.Sin(angle) * i < pE.Y)
+                while ((pS.X + 30 * Math.Cos(angle) * i) < pE.X || pS.Y + 30 * Math.Sin(angle) * i < pE.Y)
                 {
-                    MapPoint p = MapPointBuilder.CreateMapPoint(pS.X + 100 * Math.Cos(angle) * i, pS.Y + 100 * Math.Sin(angle) * i, SpatialReferenceBuilder.CreateSpatialReference(3857));
+                    MapPoint p = MapPointBuilder.CreateMapPoint(pS.X + 30 * Math.Cos(angle) * i, pS.Y + 30 * Math.Sin(angle) * i, SpatialReferenceBuilder.CreateSpatialReference(3857));
                     i++;
                     points.Add(p);
                 }
             }
             else if(!xPlus && yPlus)
             {
-                while ((pS.X + 100 * Math.Cos(angle) * i) > pE.X || pS.Y + 100 * Math.Sin(angle) * i < pE.Y)
+                while ((pS.X + 30 * Math.Cos(angle) * i) > pE.X || pS.Y + 30 * Math.Sin(angle) * i < pE.Y)
                 {
-                    MapPoint p = MapPointBuilder.CreateMapPoint(pS.X + 100 * Math.Cos(angle) * i, pS.Y + 100 * Math.Sin(angle) * i, SpatialReferenceBuilder.CreateSpatialReference(3857));
+                    MapPoint p = MapPointBuilder.CreateMapPoint(pS.X + 30 * Math.Cos(angle) * i, pS.Y + 30 * Math.Sin(angle) * i, SpatialReferenceBuilder.CreateSpatialReference(3857));
                     i++;
                     points.Add(p);
                 }
             }
             else if (xPlus && !yPlus)
             {
-                while ((pS.X + 100 * Math.Cos(angle) * i) < pE.X || pS.Y + 100 * Math.Sin(angle) * i > pE.Y)
+                while ((pS.X + 30 * Math.Cos(angle) * i) < pE.X || pS.Y + 30 * Math.Sin(angle) * i > pE.Y)
                 {
-                    MapPoint p = MapPointBuilder.CreateMapPoint(pS.X + 100 * Math.Cos(angle) * i, pS.Y + 100 * Math.Sin(angle) * i, SpatialReferenceBuilder.CreateSpatialReference(3857));
+                    MapPoint p = MapPointBuilder.CreateMapPoint(pS.X + 30 * Math.Cos(angle) * i, pS.Y + 30 * Math.Sin(angle) * i, SpatialReferenceBuilder.CreateSpatialReference(3857));
                     i++;
                     points.Add(p);
                 }
             }
             else//--
             {
-                while ((pS.X + 100 * Math.Cos(angle) * i) > pE.X || pS.Y + 100 * Math.Sin(angle) * i > pE.Y)
+                while ((pS.X + 30 * Math.Cos(angle) * i) > pE.X || pS.Y + 30 * Math.Sin(angle) * i > pE.Y)
                 {
-                    MapPoint p = MapPointBuilder.CreateMapPoint(pS.X + 100 * Math.Cos(angle) * i, pS.Y + 100 * Math.Sin(angle) * i, SpatialReferenceBuilder.CreateSpatialReference(3857));
+                    MapPoint p = MapPointBuilder.CreateMapPoint(pS.X + 30 * Math.Cos(angle) * i, pS.Y + 30 * Math.Sin(angle) * i, SpatialReferenceBuilder.CreateSpatialReference(3857));
                     i++;
                     points.Add(p);
                 }

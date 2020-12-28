@@ -86,6 +86,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         public const string ConstFieldName_AffectDegree = "AffectDegree";
         public const string ConstFieldName_r_estimate = "r_estimate";
         public const string ConstFieldName_r_real = "r_real";
+        public const string ConstFieldName_factor = "factor";
         #endregion
 
         #region 自定义
