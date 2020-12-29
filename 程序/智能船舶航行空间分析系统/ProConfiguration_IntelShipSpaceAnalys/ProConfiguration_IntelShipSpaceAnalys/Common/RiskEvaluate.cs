@@ -94,76 +94,13 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                         Y = centerRevise.Y + moveYs
                                     };
                                     //长半轴
-                                    for(int i = 0;i < 21; i++)
-                                    {
-                                        double yStep = Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI) * asemi *0.05;
-                                        double xStep = Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI) * asemi *0.05;
-                                        double risk = CalCollisionRisk(i);
-                                        Coordinate2D evaluatePoint = new Coordinate2D()
-                                        {
-                                            X = centerTs.X + xStep * i,
-                                            Y = centerTs.Y + yStep * i
-                                        };
-                                        MapPoint p = MapPointBuilder.CreateMapPoint(evaluatePoint,SpatialReferenceBuilder.CreateSpatialReference(3857));
-                                        using (RowBuffer rowBuffer = fc_evaluatePoints.CreateRowBuffer())
-                                        {
-                                            // Either the field index or the field name can be used in the indexer.
-                                            rowBuffer[ConstDefintion.ConstFieldName_r_estimate] = risk;
-                                            rowBuffer[ConstDefintion.ConstFieldName_factor] = 0.05*i;
-                                            rowBuffer[fcd_evaluatePoints.GetShapeField()] = p;
-                                            using (Feature feature = fc_evaluatePoints.CreateRow(rowBuffer))
-                                            {
-                                                feature.Store();
-                                            }
-                                        }
-                                    }
+                                    double angle1 = AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI;
+                                    CreateSemiEvaluatePoint(angle1,asemi, centerTs, fc_evaluatePoints);
                                     //短半轴
-                                    for (int i = 0; i < 21; i++)
-                                    {
-                                        double yStep1 = Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI/2) * bsemi * 0.05;
-                                        double xStep1 = Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI/2) * bsemi * 0.05;
-
-                                        double yStep2 = Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog) - Math.PI / 2) * bsemi * 0.05;
-                                        double xStep2 = Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog) - Math.PI / 2) * bsemi * 0.05;
-
-                                        double risk = CalCollisionRisk(i);
-                                        Coordinate2D evaluatePoint1 = new Coordinate2D()
-                                        {
-                                            X = centerTs.X + xStep1 * i,
-                                            Y = centerTs.Y + yStep1 * i
-                                        };
-
-                                        Coordinate2D evaluatePoint2 = new Coordinate2D()
-                                        {
-                                            X = centerTs.X + xStep2 * i,
-                                            Y = centerTs.Y + yStep2 * i
-                                        };
-
-                                        MapPoint p1 = MapPointBuilder.CreateMapPoint(evaluatePoint1, SpatialReferenceBuilder.CreateSpatialReference(3857));
-                                        MapPoint p2 = MapPointBuilder.CreateMapPoint(evaluatePoint2, SpatialReferenceBuilder.CreateSpatialReference(3857));
-                                        using (RowBuffer rowBuffer = fc_evaluatePoints.CreateRowBuffer())
-                                        {
-                                            // Either the field index or the field name can be used in the indexer.
-                                            rowBuffer[ConstDefintion.ConstFieldName_r_estimate] = risk;
-                                            rowBuffer[fcd_evaluatePoints.GetShapeField()] = p1;
-                                            rowBuffer[ConstDefintion.ConstFieldName_factor] = 0.05 * i;
-                                            using (Feature feature = fc_evaluatePoints.CreateRow(rowBuffer))
-                                            {
-                                                feature.Store();
-                                            }
-                                        }
-                                        using (RowBuffer rowBuffer = fc_evaluatePoints.CreateRowBuffer())
-                                        {
-                                            // Either the field index or the field name can be used in the indexer.
-                                            rowBuffer[ConstDefintion.ConstFieldName_r_estimate] = risk;
-                                            rowBuffer[ConstDefintion.ConstFieldName_factor] = 0.05 * i;
-                                            rowBuffer[fcd_evaluatePoints.GetShapeField()] = p2;
-                                            using (Feature feature = fc_evaluatePoints.CreateRow(rowBuffer))
-                                            {
-                                                feature.Store();
-                                            }
-                                        }
-                                    }
+                                    double angle2 = AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI / 2;
+                                    double angle3 = AngularUnit.Degrees.ConvertToRadians(cog) - Math.PI / 2;
+                                    CreateSemiEvaluatePoint(angle2, bsemi, centerTs, fc_evaluatePoints);
+                                    CreateSemiEvaluatePoint(angle3, bsemi, centerTs, fc_evaluatePoints);
                                     double moveXe = (tdv2 * sog * ConstDefintion.ConstDouble_mpersTOkn * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog)));
                                     double moveYe = (tdv2 * sog * ConstDefintion.ConstDouble_mpersTOkn * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog)));
                                     Coordinate2D centerTe = new Coordinate2D()
@@ -171,76 +108,11 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                         X = centerRevise.X + moveXe,
                                         Y = centerRevise.Y + moveYe
                                     };
-                                    for (int i = 0; i < 21; i++)
-                                    {
-                                        double yStep = Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))* asemi * 0.05;
-                                        double xStep = Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))* asemi * 0.05;
-                                        double risk = CalCollisionRisk(i);
-                                        Coordinate2D evaluatePoint = new Coordinate2D()
-                                        {
-                                            X = centerTe.X + xStep * i,
-                                            Y = centerTe.Y + yStep * i
-                                        };
-                                        MapPoint p = MapPointBuilder.CreateMapPoint(evaluatePoint, SpatialReferenceBuilder.CreateSpatialReference(3857));
-                                        using (RowBuffer rowBuffer = fc_evaluatePoints.CreateRowBuffer())
-                                        {
-                                            // Either the field index or the field name can be used in the indexer.
-                                            rowBuffer[ConstDefintion.ConstFieldName_r_estimate] = risk;
-                                            rowBuffer[ConstDefintion.ConstFieldName_factor] = 0.05 * i;
-                                            rowBuffer[fcd_evaluatePoints.GetShapeField()] = p;
-                                            using (Feature feature = fc_evaluatePoints.CreateRow(rowBuffer))
-                                            {
-                                                feature.Store();
-                                            }
-                                        }
-                                    }
+                                    double angle4 = AngularUnit.Degrees.ConvertToRadians(cog);
+                                    CreateSemiEvaluatePoint(angle4, asemi, centerTe, fc_evaluatePoints);
                                     //短半轴
-                                    for (int i = 0; i < 21; i++)
-                                    {
-                                        double yStep1 = Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI / 2) * bsemi * 0.05;
-                                        double xStep1 = Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI / 2) * bsemi * 0.05;
-
-                                        double yStep2 = Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog) - Math.PI / 2) * bsemi * 0.05;
-                                        double xStep2 = Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog) - Math.PI / 2) * bsemi * 0.05;
-
-                                        double risk = CalCollisionRisk(i);
-                                        Coordinate2D evaluatePoint1 = new Coordinate2D()
-                                        {
-                                            X = centerTe.X + xStep1 * i,
-                                            Y = centerTe.Y + yStep1 * i
-                                        };
-
-                                        Coordinate2D evaluatePoint2 = new Coordinate2D()
-                                        {
-                                            X = centerTe.X + xStep2 * i,
-                                            Y = centerTe.Y + yStep2 * i
-                                        };
-
-                                        MapPoint p1 = MapPointBuilder.CreateMapPoint(evaluatePoint1, SpatialReferenceBuilder.CreateSpatialReference(3857));
-                                        MapPoint p2 = MapPointBuilder.CreateMapPoint(evaluatePoint2, SpatialReferenceBuilder.CreateSpatialReference(3857));
-                                        using (RowBuffer rowBuffer = fc_evaluatePoints.CreateRowBuffer())
-                                        {
-                                            // Either the field index or the field name can be used in the indexer.
-                                            rowBuffer[ConstDefintion.ConstFieldName_r_estimate] = risk;
-                                            rowBuffer[ConstDefintion.ConstFieldName_factor] = 0.05 * i;
-                                            rowBuffer[fcd_evaluatePoints.GetShapeField()] = p1;
-                                            using (Feature feature = fc_evaluatePoints.CreateRow(rowBuffer))
-                                            {
-                                                feature.Store();
-                                            }
-                                        }
-                                        using (RowBuffer rowBuffer = fc_evaluatePoints.CreateRowBuffer())
-                                        {
-                                            // Either the field index or the field name can be used in the indexer.
-                                            rowBuffer[ConstDefintion.ConstFieldName_r_estimate] = risk;
-                                            rowBuffer[ConstDefintion.ConstFieldName_factor] = 0.05 * i;
-                                            rowBuffer[fcd_evaluatePoints.GetShapeField()] = p2;
-                                            using (Feature feature = fc_evaluatePoints.CreateRow(rowBuffer))
-                                            {
-                                                feature.Store();
-                                            }
-                                        }
-                                    }
+                                    CreateSemiEvaluatePoint(angle2, bsemi, centerTe, fc_evaluatePoints);
+                                    CreateSemiEvaluatePoint(angle3, bsemi, centerTe, fc_evaluatePoints);
                                 }
                             }
                         }
@@ -248,7 +120,32 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                 }
             });
         }
-
+        private static void CreateSemiEvaluatePoint(double angle,double semi, Coordinate2D point ,FeatureClass fc_evaluatePoints)
+        {
+            for (int i = 0; i < 21; i++)
+            {
+                double yStep = Math.Sin(angle) * semi * 0.05;
+                double xStep = Math.Cos(angle) * semi * 0.05;
+                double risk = CalCollisionRisk(i);
+                Coordinate2D evaluatePoint = new Coordinate2D()
+                {
+                    X = point.X + xStep * i,
+                    Y = point.Y + yStep * i
+                };
+                MapPoint p = MapPointBuilder.CreateMapPoint(evaluatePoint, SpatialReferenceBuilder.CreateSpatialReference(3857));
+                using (RowBuffer rowBuffer = fc_evaluatePoints.CreateRowBuffer())
+                {
+                    // Either the field index or the field name can be used in the indexer.
+                    rowBuffer[ConstDefintion.ConstFieldName_r_estimate] = risk;
+                    rowBuffer[ConstDefintion.ConstFieldName_factor] = 0.05 * i;
+                    rowBuffer[ConstDefintion.ConstFieldName_Shape] = p;
+                    using (Feature feature = fc_evaluatePoints.CreateRow(rowBuffer))
+                    {
+                        feature.Store();
+                    }
+                }
+            }
+        }
         private static double CalCollisionRisk(int i)
         {
             double f = i * 0.05;

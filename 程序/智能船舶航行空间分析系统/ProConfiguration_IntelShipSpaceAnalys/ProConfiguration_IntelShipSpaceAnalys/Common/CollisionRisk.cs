@@ -36,6 +36,11 @@ namespace ProConfiguration_IntelShipSpaceAnalys
 
         public double DCPA { get; set; }
         public double TCPA { get; set; }
+
+        public double Ts { get; set; }
+        public double Tj { get; set; }
+        public double Tmin { get; set; }
+        public double TCR { get; set; }
         public double collisionRisk { get; set; }
 
         public CollisionRisk(Feature ownShip, Feature targetShip)
@@ -87,9 +92,39 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         {
             if (CalDdvTdv() && CalDcpaTcpa())
             {
-                if (DDV > 1) collisionRisk = 0;
-                else if (DDV < 0.5) collisionRisk = 1;
-                else collisionRisk =Math.Pow(2 - 2 * DDV,3.03);
+                //计算空间危险度
+                double kj_risk = 0;
+                if (DDV > 1) kj_risk = 0;
+                else if (DDV < 0.5) kj_risk = 1;
+                else kj_risk = Math.Pow(2 - 2 * DDV,3.03);
+                //计算时间危险度
+                double sj_risk = 0;
+                if (Tmin > 0)
+                {
+                    if (Tmin > Tj) sj_risk = 0;
+                    else if (Tmin < Ts) sj_risk = 1;
+                    else
+                    {
+                        double sj_k = (Tj-Tmin) / (Tj - Ts);
+                        sj_risk = Math.Pow(sj_k,3.03);
+                    }
+                }
+                else
+                {
+                    sj_risk = 0;
+                }
+                TCR = sj_risk;
+                if(kj_risk == 0) { collisionRisk = 0; }
+                else
+                {
+                    if (sj_risk == 0)
+                        collisionRisk = 0;
+                    else
+                    {
+                        collisionRisk = Math.Max(sj_risk,kj_risk);
+                    }
+                }
+               
                 return true;
             }
             else
@@ -97,12 +132,13 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         }
         private bool CalDcpaTcpa()
         {
-
             double Vr = Math.Sqrt(Vrx * Vrx + Vry * Vry);
             θr = Math.Atan2(Vry,Vrx);
             double k = Math.Tan(θr);
             DCPA = Math.Abs(y - k * x) / Math.Sqrt(k * k + 1);
             TCPA = Math.Sqrt(x * x + y * y - DCPA * DCPA) / Vr;
+            Ts = 1852 / Vr;
+            Tj = 1852 * 6 / Vr;
             return true;
         }
         private bool CalDdvTdv()
@@ -148,17 +184,21 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                 double ft12 = (-(B21 + B22 * tmin2) - Math.Sqrt(D1 * tmin2 * tmin2 + E1 * tmin2 + F1)) / (2 * A2);
                 double ft22 = (-(B21 + B22 * tmin2) + Math.Sqrt(D1 * tmin2 * tmin2 + E1 * tmin2 + F1)) / (2 * A2);
                 double f = ft11;
+                Tmin = tmin1;
                 if (ft21 > 0 && ft21 < f)
                 {
                     f = ft21;
+                    Tmin = tmin1;
                 }
                 if (ft12 > 0 && ft12 < f)
                 {
                     f = ft12;
+                    Tmin = tmin2;
                 }
                 if (ft22 > 0 && ft22 < f)
                 {
                     f = ft22;
+                    Tmin = tmin2;
                 }
                 DDV = f;
             }
@@ -234,6 +274,8 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                         target[ConstDefintion.ConstFieldName_tdv2] = ctd.TDV2;
                                         target[ConstDefintion.ConstFieldName_dcpa] = ctd.DCPA;
                                         target[ConstDefintion.ConstFieldName_tcpa] = ctd.TCPA;
+                                        target[ConstDefintion.ConstFieldName_tmin] = ctd.Tmin;
+                                        target[ConstDefintion.ConstFieldName_tcr] = ctd.TCR;
                                         target[ConstDefintion.ConstFieldName_CollisionRisk] = ctd.collisionRisk;
                                         
                                         target.Store();

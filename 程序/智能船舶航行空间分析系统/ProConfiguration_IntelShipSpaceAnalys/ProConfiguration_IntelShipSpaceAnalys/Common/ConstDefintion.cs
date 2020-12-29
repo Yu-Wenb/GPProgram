@@ -87,6 +87,9 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         public const string ConstFieldName_r_estimate = "r_estimate";
         public const string ConstFieldName_r_real = "r_real";
         public const string ConstFieldName_factor = "factor";
+        public const string ConstFieldName_tmin = "tmin";
+        public const string ConstFieldName_tcr = "tcr";
+        public const string ConstFieldName_Shape = "Shape";
         #endregion
 
         #region 自定义
