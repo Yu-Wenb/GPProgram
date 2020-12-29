@@ -6,6 +6,7 @@ using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,14 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         {
             await QueuedTask.Run(() =>
             {
+                StreamReader sr = new StreamReader(System.Environment.CurrentDirectory + ConstDefintion.ConstPath_TimeFilterConfig, Encoding.Default);
+                String line;
+                //读取状态
+                line = sr.ReadLine();
+                string status = line;
+                line = sr.ReadLine();
+                int value = Convert.ToInt32(line);
+                sr.Close();
                 using (Geodatabase gdb = new Geodatabase(new FileGeodatabaseConnectionPath(new Uri(GeoDataTool.DefaultProject.DefaultGeodatabasePath))))
                 {
                     gdb.ApplyEdits(() =>

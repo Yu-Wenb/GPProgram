@@ -100,6 +100,9 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         public const string ConstStr_EncounterSituationOvertaking = "Overtaking";
         public const string ConstStr_CalJoinSpeed = "speed";
         public const string ConstStr_CalJoinAngle = "angle";
+        public const string ConstStr_TimeFilterStatusON = "ON";
+        public const string ConstStr_TimeFilterStatusOFF = "OFF";
+        public const string ConstPath_TimeFilterConfig = @"\timeFilter.txt";
         public const double ConstDouble_mpersTOkn = 0.5144; //1852/3600
         #endregion
     }

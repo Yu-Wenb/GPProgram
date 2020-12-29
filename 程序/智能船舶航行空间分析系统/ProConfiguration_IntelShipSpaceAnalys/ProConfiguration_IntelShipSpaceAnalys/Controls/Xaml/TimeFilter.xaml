@@ -1,0 +1,40 @@
+﻿<Window x:Class="ProConfiguration_IntelShipSpaceAnalys.TimeFilter"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProConfiguration_IntelShipSpaceAnalys"
+        mc:Ignorable="d"
+        Title="时间过滤器" Height="260" Width="400">
+    <Grid Background="LightYellow">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.4*"></RowDefinition>
+            <RowDefinition Height="0.4*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="15">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"></RowDefinition>
+                <RowDefinition Height="0.5*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Text="是否打开过滤器" FontSize="16" FontFamily="Arial Black" VerticalAlignment="Center" Margin="20,0" ></TextBlock>
+            
+            <RadioButton Name="rb_filterON" Grid.Column="0" Grid.Row="1" GroupName="timeFilter" VerticalAlignment="Center" HorizontalAlignment="Center" >是</RadioButton>
+            <RadioButton Name="rb_filterOFF" Grid.Column="1" Grid.Row="1" GroupName="timeFilter" HorizontalAlignment="Center" VerticalAlignment="Center">否</RadioButton>
+        </Grid>
+        <Grid Grid.Row="1" Margin="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Text="过滤值：" FontSize="16" FontFamily="Arial Black" VerticalAlignment="Center" Margin="20,0" ></TextBlock>
+            <TextBox Name="tb_filterTime" Grid.Column="1" Margin="0,12"></TextBox>
+        </Grid>
+        <Button Grid.Row="3" Content="保存" Width="80" HorizontalAlignment="Right" Margin="30,5" Click="Button_Click"> </Button>
+    </Grid>
+</Window>
