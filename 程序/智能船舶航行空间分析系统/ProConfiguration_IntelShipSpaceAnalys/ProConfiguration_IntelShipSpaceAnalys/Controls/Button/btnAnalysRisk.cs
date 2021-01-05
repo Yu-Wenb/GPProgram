@@ -22,12 +22,12 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         private static async Task CreateVoyageMaskAsync()
         {
             double f = 1 - (Math.Pow(0.5, (1 / 3.03))) / 2;
-            await PadConstruction.CreateKeyPoints(ConstDefintion.ConstFeatureClass_VoyageRiskMidRiskMask,ConstDefintion.ConstFeatureClass_UnionVoyageRiskMidMask,ConstDefintion.ConstFeatureClass_VoyageMaskRiskMidPoint,f);
+            await PadConstruction.CreateKeyPoints(ConstDefintion.ConstFeatureClass_VoyageRiskMidRiskMask, ConstDefintion.ConstFeatureClass_UnionVoyageRiskMidMask, ConstDefintion.ConstFeatureClass_VoyageMaskRiskMidPoint, f);
             await PadConstruction.CreateKeyPoints(ConstDefintion.ConstFeatureClass_VoyageLocaMidRiskMask, ConstDefintion.ConstFeatureClass_UnionVoyageLocationMidMask, ConstDefintion.ConstFeatureClass_VoyageMaskLocaMidPoint, 0.75);
             await PadConstruction.CreateKeyPoints(ConstDefintion.ConstFeatureClass_VoyageMask, ConstDefintion.ConstFeatureClass_UnionVoyageMask, ConstDefintion.ConstFeatureClass_VoyageMaskOutlinePoint, 1);
             await PadConstruction.CreateKeyPoints(ConstDefintion.ConstFeatureClass_VoyageShipMask, ConstDefintion.ConstFeatureClass_UnionVoyageShipMask, ConstDefintion.ConstFeatureClass_VoyageMaskInternalPoint, 0.5);
             await PadConstruction.KeyPointsIntegration();
-
+            await PadConstruction.CreateOwnShipObstacleLine();
 
         }
         private async Task ProcessAsync()

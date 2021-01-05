@@ -99,6 +99,13 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                 else kj_risk = Math.Pow(2 - 2 * DDV,3.03);
                 //计算时间危险度
                 double sj_risk = 0;
+                double vr = Math.Sqrt(Vrx*Vrx+Vry*Vry);
+                if(DDV>0.5) Ts = 0;
+                else
+                {
+                    Ts = Math.Sqrt(0.25  - DDV * DDV)*asemi / vr;
+                }
+                Tj = Math.Sqrt(36*1852*1852 - DDV * DDV * asemi * asemi)  / vr;
                 if (Tmin > 0)
                 {
                     if (Tmin > Tj) sj_risk = 0;
@@ -137,8 +144,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
             double k = Math.Tan(θr);
             DCPA = Math.Abs(y - k * x) / Math.Sqrt(k * k + 1);
             TCPA = Math.Sqrt(x * x + y * y - DCPA * DCPA) / Vr;
-            Ts = 1852 / Vr;
-            Tj = 1852 * 6 / Vr;
+
             return true;
         }
         private bool CalDdvTdv()
@@ -315,8 +321,8 @@ namespace ProConfiguration_IntelShipSpaceAnalys
 
                                 double asemi = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_asemi])/2;
                                 double bsemi = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_bsemi])/2;
-                                double aoffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_aoffset]);
-                                double boffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_boffset]);
+                                double aoffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_aoffset])/2;
+                                double boffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_boffset])/2;
                                 double DDV = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_CollisionRisk]);
                                 double cog = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_cog]);
                                 cog = CommonMethod.GIScoord2ShipCoord(cog);
@@ -345,7 +351,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                     rowBuffer[ConstDefintion.ConstFieldName_asemi] = asemi;
                                     rowBuffer[ConstDefintion.ConstFieldName_bsemi] = bsemi;
                                     rowBuffer[ConstDefintion.ConstFieldName_aoffset] = aoffset;
-                                    rowBuffer[ConstDefintion.ConstFieldName_ddv] = DDV;
+                                    rowBuffer[ConstDefintion.ConstFieldName_CollisionRisk] = DDV;
                                     rowBuffer[shipDomainDefinition.GetShapeField()] = moved_ellipse;
                                     using (Feature feature = shipDomain.CreateRow(rowBuffer))
                                     {

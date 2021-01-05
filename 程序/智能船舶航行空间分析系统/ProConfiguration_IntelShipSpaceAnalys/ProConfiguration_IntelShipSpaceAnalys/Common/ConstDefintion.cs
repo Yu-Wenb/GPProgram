@@ -37,6 +37,9 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         public const string ConstFeatureClass_TargetShip = "TargetShip";
         public const string ConstFeatureClass_ShipDomianEllipse = "ShipDomianEllipse";
 
+        public const string ConstFeatureClass_TargetShipObstacleLine = "TargetShipObstacleLine";
+        public const string ConstFeatureClass_OwnShipObstacleLine = "OwnShipObstacleLine";
+
         public const string ConstFeatureClass_VoyageMask = "VoyageMask";
         public const string ConstFeatureClass_UnionVoyageMask = "UnionVoyageMask";
         public const string ConstFeatureClass_VoyageMaskOutlinePoint = "VoyageMaskOutlinePoint";
@@ -89,6 +92,8 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         public const string ConstFieldName_factor = "factor";
         public const string ConstFieldName_tmin = "tmin";
         public const string ConstFieldName_tcr = "tcr";
+        public const string ConstFieldName_dcr = "dcr";
+        public const string ConstFieldName_risk = "risk";
         public const string ConstFieldName_Shape = "Shape";
         #endregion
 

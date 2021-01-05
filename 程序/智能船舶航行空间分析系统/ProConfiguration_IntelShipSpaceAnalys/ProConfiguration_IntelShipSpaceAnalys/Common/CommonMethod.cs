@@ -77,11 +77,11 @@ namespace ProConfiguration_IntelShipSpaceAnalys
             double size;
             if (angle < 180)
             {
-                size =max - Math.Abs(90 - angle) * step;
+                size =max - Math.Abs(angle) * step;
             }
             else
             {
-                size =max - Math.Abs(270 - angle) * step;
+                size =max - Math.Abs(angle-180) * step;
             }
             size = Math.Round(size,1);
             return size;
@@ -118,7 +118,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                 {
                     List<CIMUniqueValue> listUniqueValues = new List<CIMUniqueValue>();
                     CIMUniqueValue cuv = new CIMUniqueValue { FieldValues = new string[] { i.ToString() } };
-                    CIMMarker cm = SymbolFactory.Instance.ConstructMarker(ColorFactory.Instance.BlackRGB, 3, SetShipRotate(i));
+                    CIMMarker cm = SymbolFactory.Instance.ConstructMarker(ColorFactory.Instance.BlackRGB, GetShipSymbolSize(6,8,i), SetShipRotate(i));
                     listUniqueValues.Add(cuv);
                     CIMUniqueValueClass UniqueValueClass = new CIMUniqueValueClass
                     {

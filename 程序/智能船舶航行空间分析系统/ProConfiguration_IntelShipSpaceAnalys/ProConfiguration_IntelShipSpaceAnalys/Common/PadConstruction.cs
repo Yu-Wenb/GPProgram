@@ -23,9 +23,9 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                 String line;
                 //读取状态
                 line = sr.ReadLine();
-                string status = line;
+                string filterStatus = line;
                 line = sr.ReadLine();
-                int value = Convert.ToInt32(line);
+                int filterValue = Convert.ToInt32(line);
                 sr.Close();
                 using (Geodatabase gdb = new Geodatabase(new FileGeodatabaseConnectionPath(new Uri(GeoDataTool.DefaultProject.DefaultGeodatabasePath))))
                 {
@@ -36,6 +36,8 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                         FeatureClass voyageMask = gdb.OpenDataset<FeatureClass>(maskName);
                         FeatureClassDefinition voyageMaskDefinition = gdb.GetDefinition<FeatureClassDefinition>(maskName);
                         FeatureClass fc_ownShip = gdb.OpenDataset<FeatureClass>(ConstDefintion.ConstFeatureClass_OwnShip);
+                        FeatureClass TargetShipObstacleLine = gdb.OpenDataset<FeatureClass>(ConstDefintion.ConstFeatureClass_TargetShipObstacleLine);
+                        TargetShipObstacleLine.DeleteRows(new QueryFilter() { WhereClause = "OBJECTID >= 1" });
                         double own_x;
                         double own_y;
                         double own_cog;
@@ -62,12 +64,15 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                     double CollisionRisk = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_CollisionRisk]);
                                     double asemi = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_asemi]) * factor * 0.78;
                                     double bsemi = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_bsemi]) * factor * 0.78;
-                                    double aoffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_aoffset]);
-                                    double boffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_boffset]);
+                                    double aoffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_aoffset]) ;
+                                    double boffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_boffset]) ;
                                     double cog = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_cog]);
                                     double sog = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_sog]);
                                     double tdv1 = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_tdv1]);
                                     double tdv2 = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_tdv2]);
+                                    double ddv = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_ddv]);
+                                    double tcr = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_tcr]);
+                                    double tmin = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_tmin]);
                                     cog = CommonMethod.GIScoord2ShipCoord(cog);
                                     Coordinate2D ellipseCenter = new Coordinate2D()
                                     {
@@ -75,6 +80,19 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                         Y = p_ship.Y
                                     };
                                     if (!(CollisionRisk > 0)) continue;
+                                    //根据时间过滤器
+                                    if (filterStatus != ConstDefintion.ConstStr_TimeFilterStatusOFF)
+                                    {
+                                        int time = filterValue * 60;
+                                        if (tdv1 > time) continue;
+                                        else
+                                        {
+                                            if (tdv2 > time)
+                                            {
+                                                tdv2 = time;
+                                            }
+                                        }
+                                    }
                                     //if (CommonMethod.JungeLeft(own_x - ellipseCenter.X, own_y - ellipseCenter.Y, own_cog) && CollisionRisk != 1) continue;
                                     GeodesicEllipseParameter geodesic = new GeodesicEllipseParameter()
                                     {
@@ -163,7 +181,40 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                             feature.Store();
                                         }
                                     }
+                                    //创建本船与他船的冲突路径
+                                    Coordinate2D ts_location = ellipseCenter;
+                                    Coordinate2D ts_Ts = new Coordinate2D()//目标船冲突起点
+                                    {
+                                        X = ts_location.X + moveXs,
+                                        Y = ts_location.Y + moveYs
+                                    };
+                                    Coordinate2D ts_Te = new Coordinate2D()//目标船冲突终点
+                                    {
+                                        X = ts_location.X + moveXe,
+                                        Y = ts_location.Y + moveYe
+                                    };
+                                    List<Coordinate2D> ts_obstaclePointList = new List<Coordinate2D>() { ts_Ts,ts_Te };
+                                    Polyline ts_obstacleLine = PolylineBuilder.CreatePolyline(ts_obstaclePointList,SpatialReferenceBuilder.CreateSpatialReference(3857));
+                                    double kj_risk = 0;
+                                    if (ddv > 1) kj_risk = 0;
+                                    else if (ddv < 0.5) kj_risk = 1;
+                                    else kj_risk = Math.Pow(2 - 2 * ddv, 3.03);
+                                    using (RowBuffer rowBuffer = TargetShipObstacleLine.CreateRowBuffer())
+                                    {
+                                        // Either the field index or the field name can be used in the indexer.
+                                        rowBuffer[ConstDefintion.ConstFieldName_dcr] = kj_risk; 
+                                        rowBuffer[ConstDefintion.ConstFieldName_tcr] = tcr;
+                                        rowBuffer[ConstDefintion.ConstFieldName_risk] = CollisionRisk;
+                                        rowBuffer[ConstDefintion.ConstFieldName_tdv1] = tdv1;
+                                        rowBuffer[ConstDefintion.ConstFieldName_tdv2] = tdv2;
+                                        rowBuffer[ConstDefintion.ConstFieldName_tmin] = tmin;
+                                        rowBuffer[ConstDefintion.ConstFieldName_Shape] = ts_obstacleLine;
 
+                                        using (Feature feature = TargetShipObstacleLine.CreateRow(rowBuffer))
+                                        {
+                                            feature.Store();
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -225,6 +276,116 @@ namespace ProConfiguration_IntelShipSpaceAnalys
 
             });
         }
+
+        internal static async Task CreateOwnShipObstacleLine()
+        {
+            await QueuedTask.Run(() => 
+            {
+                using (Geodatabase gdb = new Geodatabase(new FileGeodatabaseConnectionPath(new Uri(GeoDataTool.DefaultProject.DefaultGeodatabasePath))))
+                {
+                    FeatureClass fc_targetShip = gdb.OpenDataset<FeatureClass>(ConstDefintion.ConstFeatureClass_TargetShipObstacleLine);
+                    FeatureClass fc_ownShipObstacleLine = gdb.OpenDataset<FeatureClass>(ConstDefintion.ConstFeatureClass_OwnShipObstacleLine);
+                    fc_ownShipObstacleLine.DeleteRows(new QueryFilter() { WhereClause = "OBJECTID > 0" });
+                    FeatureClass fc_ownShip = gdb.OpenDataset<FeatureClass>(ConstDefintion.ConstFeatureClass_OwnShip);
+                    MapPoint own_ship;
+                    double own_cog;
+                    double own_sog;
+                    using (RowCursor rowCursor = fc_ownShip.Search(null, false))
+                    {
+                        rowCursor.MoveNext();
+                        using (Feature row = rowCursor.Current as Feature)
+                        {
+                            own_ship = (row.GetShape() as MapPoint);
+                            own_sog = Convert.ToDouble(row[ConstDefintion.ConstFieldName_sog]);
+                            own_cog = Convert.ToDouble(row[ConstDefintion.ConstFieldName_cog]);
+                        }
+                    }
+                    Coordinate2D os_start_cdn = new Coordinate2D()
+                    {
+                        X=own_ship.X,
+                        Y=own_ship.Y
+                    };
+                    double angle = 90 - own_cog;
+                    angle = angle / 180 * Math.PI;
+                    double xMove = 8 * 1852 * Math.Cos(angle);
+                    double yMove = 8 * 1852 * Math.Sin(angle);
+                    Coordinate2D os_end_cdn = new Coordinate2D()
+                    {
+                        X = own_ship.X + xMove,
+                        Y = own_ship.Y + yMove
+                    };
+                    Polyline pl_1 = PolylineBuilder.CreatePolyline(new List<Coordinate2D>() { os_start_cdn, os_end_cdn }, SpatialReferenceBuilder.CreateSpatialReference(3857));
+                    gdb.ApplyEdits(() => 
+                    {
+                        //创建第一条线
+                        using (RowBuffer rowBuffer = fc_ownShipObstacleLine.CreateRowBuffer())
+                        {
+                            // Either the field index or the field name can be used in the indexer.
+                            rowBuffer[ConstDefintion.ConstFieldName_dcr] = 0;
+                            rowBuffer[ConstDefintion.ConstFieldName_tcr] = 0;
+                            rowBuffer[ConstDefintion.ConstFieldName_risk] = 0;
+                            rowBuffer[ConstDefintion.ConstFieldName_tdv1] = 0;
+                            rowBuffer[ConstDefintion.ConstFieldName_tdv2] = 0;
+                            rowBuffer[ConstDefintion.ConstFieldName_tmin] = 0;
+                            rowBuffer[ConstDefintion.ConstFieldName_Shape] = pl_1;
+
+                            using (Feature feature = fc_ownShipObstacleLine.CreateRow(rowBuffer))
+                            {
+                                feature.Store();
+                            }
+                        }
+                        //创建本船会遇冲突线
+                        using (RowCursor rowCursor = fc_targetShip.Search(null, false))
+                        {
+                            while (rowCursor.MoveNext())
+                            {
+                                using (Feature ts_f = rowCursor.Current as Feature)
+                                {
+                                    double dcr = (double)ts_f[ConstDefintion.ConstFieldName_dcr];
+                                    double tcr = (double)ts_f[ConstDefintion.ConstFieldName_tcr];
+                                    double risk = (double)ts_f[ConstDefintion.ConstFieldName_risk];
+                                    double tdv1 = (double)ts_f[ConstDefintion.ConstFieldName_tdv1] ;
+                                    double tdv2 = (double)ts_f[ConstDefintion.ConstFieldName_tdv2];
+                                    double tmin = (double)ts_f[ConstDefintion.ConstFieldName_tmin];
+                                    double xTDV1 = Math.Cos(angle) * own_sog * ConstDefintion.ConstDouble_mpersTOkn * tdv1 + own_ship.X;
+                                    double yTDV1=  Math.Sin(angle) * own_sog * ConstDefintion.ConstDouble_mpersTOkn * tdv1 + own_ship.Y;
+                                    double xTDV2 = Math.Cos(angle) * own_sog * ConstDefintion.ConstDouble_mpersTOkn * tdv2 + own_ship.X;
+                                    double yTDV2 = Math.Sin(angle) * own_sog * ConstDefintion.ConstDouble_mpersTOkn * tdv2 + own_ship.Y;
+                                    Coordinate2D crd_tdv1 = new Coordinate2D()
+                                    {
+                                        X = xTDV1,
+                                        Y = yTDV1
+                                    };
+                                    Coordinate2D crd_tdv2 = new Coordinate2D()
+                                    {
+                                        X = xTDV2,
+                                        Y = yTDV2
+                                    };
+                                    Polyline pl_t = PolylineBuilder.CreatePolyline(new List<Coordinate2D>() { crd_tdv1, crd_tdv2 }, SpatialReferenceBuilder.CreateSpatialReference(3857));
+                                    using (RowBuffer rowBuffer = fc_ownShipObstacleLine.CreateRowBuffer())
+                                    {
+                                        // Either the field index or the field name can be used in the indexer.
+                                        rowBuffer[ConstDefintion.ConstFieldName_dcr] = dcr;
+                                        rowBuffer[ConstDefintion.ConstFieldName_tcr] = tcr;
+                                        rowBuffer[ConstDefintion.ConstFieldName_risk] = risk;
+                                        rowBuffer[ConstDefintion.ConstFieldName_tdv1] = tdv1;
+                                        rowBuffer[ConstDefintion.ConstFieldName_tdv2] = tdv2;
+                                        rowBuffer[ConstDefintion.ConstFieldName_tmin] = tmin;
+                                        rowBuffer[ConstDefintion.ConstFieldName_Shape] = pl_t;
+
+                                        using (Feature feature = fc_ownShipObstacleLine.CreateRow(rowBuffer))
+                                        {
+                                            feature.Store();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
         private static List<MapPoint> GetInternPoints(MapPoint pS, MapPoint pE)
         {
             List<MapPoint> points = new List<MapPoint>();
