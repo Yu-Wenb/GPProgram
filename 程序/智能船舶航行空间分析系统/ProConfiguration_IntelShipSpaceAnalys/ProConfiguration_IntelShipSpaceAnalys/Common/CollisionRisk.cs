@@ -77,9 +77,9 @@ namespace ProConfiguration_IntelShipSpaceAnalys
             Vo = v1;
             Vt = v2;
             asemi = ColdwellShipDomain.GetSemiA(targetShip)*2;
-            aoffset = ColdwellShipDomain.GetAoffset(targetShip);
+            aoffset = ColdwellShipDomain.GetAoffset(targetShip)*2;
             bsemi = ColdwellShipDomain.GetSemiB(targetShip)*2;
-            boffset = ColdwellShipDomain.GetBoffset(targetShip);
+            boffset = ColdwellShipDomain.GetBoffset(targetShip)*2;
             //asemi = KijimaShipDomain.GetSemiAB(ownShip, targetShip, "a");
             //bsemi = KijimaShipDomain.GetSemiAB(ownShip, targetShip, "b");
             //aoffset = KijimaShipDomain.GetDertaA(ownShip, targetShip);

@@ -64,8 +64,8 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                     double CollisionRisk = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_CollisionRisk]);
                                     double asemi = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_asemi]) * factor * 0.78;
                                     double bsemi = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_bsemi]) * factor * 0.78;
-                                    double aoffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_aoffset]) ;
-                                    double boffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_boffset]) ;
+                                    double aoffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_aoffset]) *factor;
+                                    double boffset = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_boffset])*factor ;
                                     double cog = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_cog]);
                                     double sog = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_sog]);
                                     double tdv1 = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_tdv1]);
@@ -73,6 +73,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                     double ddv = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_ddv]);
                                     double tcr = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_tcr]);
                                     double tmin = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_tmin]);
+                                    long objectID = Convert.ToInt64(ship[voyageMaskDefinition.GetObjectIDField()]);
                                     cog = CommonMethod.GIScoord2ShipCoord(cog);
                                     Coordinate2D ellipseCenter = new Coordinate2D()
                                     {
