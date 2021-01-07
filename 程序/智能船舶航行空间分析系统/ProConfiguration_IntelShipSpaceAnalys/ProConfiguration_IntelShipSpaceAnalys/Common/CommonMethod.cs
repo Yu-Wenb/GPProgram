@@ -90,8 +90,8 @@ namespace ProConfiguration_IntelShipSpaceAnalys
         {
             MapPoint pt1 = MapPointBuilder.CreateMapPoint(0, 2.0);
             MapPoint pt2 = MapPointBuilder.CreateMapPoint(1.0, 1.0);
-            MapPoint pt3 = MapPointBuilder.CreateMapPoint(1.0, -1.0);
-            MapPoint pt4 = MapPointBuilder.CreateMapPoint(-1.0, -1.0);
+            MapPoint pt3 = MapPointBuilder.CreateMapPoint(1.0, -2.0);
+            MapPoint pt4 = MapPointBuilder.CreateMapPoint(-1.0, -2.0);
             MapPoint pt5 = MapPointBuilder.CreateMapPoint(-1.0, 1.0);
  
             List<MapPoint> list = new List<MapPoint>() { pt1, pt2, pt3, pt4, pt5 };
@@ -118,7 +118,8 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                 {
                     List<CIMUniqueValue> listUniqueValues = new List<CIMUniqueValue>();
                     CIMUniqueValue cuv = new CIMUniqueValue { FieldValues = new string[] { i.ToString() } };
-                    CIMMarker cm = SymbolFactory.Instance.ConstructMarker(ColorFactory.Instance.BlackRGB, GetShipSymbolSize(6,8,i), SetShipRotate(i));
+                    //CIMMarker cm = SymbolFactory.Instance.ConstructMarker(ColorFactory.Instance.BlackRGB, GetShipSymbolSize(5,8,i), SetShipRotate(i));
+                    CIMMarker cm = SymbolFactory.Instance.ConstructMarker(ColorFactory.Instance.BlackRGB, GetShipSymbolSize2(10, i), SetShipRotate(i));
                     listUniqueValues.Add(cuv);
                     CIMUniqueValueClass UniqueValueClass = new CIMUniqueValueClass
                     {
@@ -152,6 +153,23 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                 featureLayer.SetRenderer(uvr);
             });
         }
+
+        private static double GetShipSymbolSize2(int v, int i)
+        {
+            if (i == 90 || i == 270)
+            {
+                return v *0.5;
+            }
+            else if(i == 130 || i == 230)
+            {
+                return v *0.9;
+            }
+            else
+            {
+                return v;
+            }
+        }
+
         public static Task<Envelope> GetRasterExtent(string path)
         {
             Task<Envelope> task = QueuedTask.Run(() =>

@@ -67,7 +67,7 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                     double sog = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_sog]);
                                     double tdv1 = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_tdv1]);
                                     double tdv2 = Convert.ToDouble(ship[ConstDefintion.ConstFieldName_tdv2]);
-                     
+                                    long objectID = Convert.ToInt64(ship["OBJECTID"]);
                                     //真北转坐标北
                                     cog = CommonMethod.GIScoord2ShipCoord(cog);
                                     Coordinate2D ellipseCenter = new Coordinate2D()
@@ -75,44 +75,56 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                                         X = p_ship.X,
                                         Y = p_ship.Y
                                     };
+                                    if (!(objectID == 6)) continue;
                                     if (!(CollisionRisk > 0)) continue;
                                     if (CommonMethod.JungeLeft(own_x - ellipseCenter.X, own_y - ellipseCenter.Y, own_cog) && CollisionRisk != 1) continue;
-                                    //创建原始位置的椭圆
-                                    double moveX = (aoffset * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) + boffset * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog));
-                                    double moveY = (aoffset * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) - boffset * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog));
-                                    Coordinate2D centerRevise = new Coordinate2D()
+                                    for (int i = 0; i < 21; i++)
                                     {
-                                        X = p_ship.X + moveX,
-                                        Y = p_ship.Y + moveY
-                                    };
-                                    //基于TDV创建起点与终点椭圆中心
-                                    double moveXs = (tdv1 * sog * ConstDefintion.ConstDouble_mpersTOkn * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog)));
-                                    double moveYs = (tdv1 * sog * ConstDefintion.ConstDouble_mpersTOkn * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog)));
-                                    Coordinate2D centerTs = new Coordinate2D()
-                                    {
-                                        X = centerRevise.X + moveXs,
-                                        Y = centerRevise.Y + moveYs
-                                    };
-                                    //长半轴
-                                    double angle1 = AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI;
-                                    CreateSemiEvaluatePoint(angle1,asemi, centerTs, fc_evaluatePoints);
-                                    //短半轴
-                                    double angle2 = AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI / 2;
-                                    double angle3 = AngularUnit.Degrees.ConvertToRadians(cog) - Math.PI / 2;
-                                    CreateSemiEvaluatePoint(angle2, bsemi, centerTs, fc_evaluatePoints);
-                                    CreateSemiEvaluatePoint(angle3, bsemi, centerTs, fc_evaluatePoints);
-                                    double moveXe = (tdv2 * sog * ConstDefintion.ConstDouble_mpersTOkn * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog)));
-                                    double moveYe = (tdv2 * sog * ConstDefintion.ConstDouble_mpersTOkn * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog)));
-                                    Coordinate2D centerTe = new Coordinate2D()
-                                    {
-                                        X = centerRevise.X + moveXe,
-                                        Y = centerRevise.Y + moveYe
-                                    };
-                                    double angle4 = AngularUnit.Degrees.ConvertToRadians(cog);
-                                    CreateSemiEvaluatePoint(angle4, asemi, centerTe, fc_evaluatePoints);
-                                    //短半轴
-                                    CreateSemiEvaluatePoint(angle2, bsemi, centerTe, fc_evaluatePoints);
-                                    CreateSemiEvaluatePoint(angle3, bsemi, centerTe, fc_evaluatePoints);
+
+                                        //创建原始位置的椭圆 动界中心
+                                        double moveX = (aoffset * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog))) + boffset * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog));
+                                        double moveY = (aoffset * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog))) - boffset * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog));
+                                        //换算第i个点位的瞬时位置椭圆中心
+                                        moveX *= i * 0.05;
+                                        moveY *= i * 0.05;
+                                        Coordinate2D centerRevise = new Coordinate2D()
+                                        {
+                                            X = p_ship.X + moveX,
+                                            Y = p_ship.Y + moveY
+                                        };
+                                        //起长半轴
+                                        double angle1 = AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI;
+                                        //短半轴
+                                        double angle2 = AngularUnit.Degrees.ConvertToRadians(cog) + Math.PI / 2;
+                                        double angle3 = AngularUnit.Degrees.ConvertToRadians(cog) - Math.PI / 2;
+                                        //基于TDV创建起点与终点椭圆中心
+                                        double moveXs = (tdv1 * sog * ConstDefintion.ConstDouble_mpersTOkn * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog)));
+                                        double moveYs = (tdv1 * sog * ConstDefintion.ConstDouble_mpersTOkn * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog)));
+                                        Coordinate2D centerTs = new Coordinate2D()
+                                        {
+                                            X = centerRevise.X + moveXs,
+                                            Y = centerRevise.Y + moveYs
+                                        };
+
+                                        CreateSemiEvaluatePoint(i,angle1, asemi * i * 0.05, centerTs, fc_evaluatePoints);
+
+                                        CreateSemiEvaluatePoint(i,angle2, bsemi * i * 0.05, centerTs, fc_evaluatePoints);
+                                        CreateSemiEvaluatePoint(i,angle3, bsemi * i * 0.05, centerTs, fc_evaluatePoints);
+                                        double moveXe = (tdv2 * sog * ConstDefintion.ConstDouble_mpersTOkn * Math.Cos(AngularUnit.Degrees.ConvertToRadians(cog)));
+                                        double moveYe = (tdv2 * sog * ConstDefintion.ConstDouble_mpersTOkn * Math.Sin(AngularUnit.Degrees.ConvertToRadians(cog)));
+                                        Coordinate2D centerTe = new Coordinate2D()
+                                        {
+                                            X = centerRevise.X + moveXe,
+                                            Y = centerRevise.Y + moveYe
+                                        };
+                                        double angle4 = AngularUnit.Degrees.ConvertToRadians(cog);
+                                        CreateSemiEvaluatePoint(i,angle4, asemi * i * 0.05, centerTe, fc_evaluatePoints);
+                                        //短半轴
+                                        CreateSemiEvaluatePoint(i,angle2, bsemi * i * 0.05, centerTe, fc_evaluatePoints);
+                                        CreateSemiEvaluatePoint(i,angle3, bsemi * i * 0.05, centerTe, fc_evaluatePoints);
+                                    }
+
+
                                 }
                             }
                         }
@@ -120,31 +132,32 @@ namespace ProConfiguration_IntelShipSpaceAnalys
                 }
             });
         }
-        private static void CreateSemiEvaluatePoint(double angle,double semi, Coordinate2D point ,FeatureClass fc_evaluatePoints)
+
+
+        private static void CreateSemiEvaluatePoint(int i,double angle, double semi, Coordinate2D point, FeatureClass fc_evaluatePoints)
         {
-            for (int i = 0; i < 21; i++)
+
+            double yStep = Math.Sin(angle) * semi;
+            double xStep = Math.Cos(angle) * semi;
+            double risk = CalCollisionRisk(i);
+            Coordinate2D evaluatePoint = new Coordinate2D()
             {
-                double yStep = Math.Sin(angle) * semi * 0.05;
-                double xStep = Math.Cos(angle) * semi * 0.05;
-                double risk = CalCollisionRisk(i);
-                Coordinate2D evaluatePoint = new Coordinate2D()
+                X = point.X + xStep,
+                Y = point.Y + yStep
+            };
+            MapPoint p = MapPointBuilder.CreateMapPoint(evaluatePoint, SpatialReferenceBuilder.CreateSpatialReference(3857));
+            using (RowBuffer rowBuffer = fc_evaluatePoints.CreateRowBuffer())
+            {
+                // Either the field index or the field name can be used in the indexer.
+                rowBuffer[ConstDefintion.ConstFieldName_r_estimate] = risk;
+                rowBuffer[ConstDefintion.ConstFieldName_factor] = 0.05 * i;
+                rowBuffer[ConstDefintion.ConstFieldName_Shape] = p;
+                using (Feature feature = fc_evaluatePoints.CreateRow(rowBuffer))
                 {
-                    X = point.X + xStep * i,
-                    Y = point.Y + yStep * i
-                };
-                MapPoint p = MapPointBuilder.CreateMapPoint(evaluatePoint, SpatialReferenceBuilder.CreateSpatialReference(3857));
-                using (RowBuffer rowBuffer = fc_evaluatePoints.CreateRowBuffer())
-                {
-                    // Either the field index or the field name can be used in the indexer.
-                    rowBuffer[ConstDefintion.ConstFieldName_r_estimate] = risk;
-                    rowBuffer[ConstDefintion.ConstFieldName_factor] = 0.05 * i;
-                    rowBuffer[ConstDefintion.ConstFieldName_Shape] = p;
-                    using (Feature feature = fc_evaluatePoints.CreateRow(rowBuffer))
-                    {
-                        feature.Store();
-                    }
+                    feature.Store();
                 }
             }
+
         }
         private static double CalCollisionRisk(int i)
         {
